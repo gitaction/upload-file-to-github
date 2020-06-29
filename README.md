@@ -2,8 +2,7 @@
 
 ![Build and Deploy to Cloud Functions](https://github.com/gitaction/upload-file-to-github/workflows/Build%20and%20Deploy%20to%20Cloud%20Functions/badge.svg)
 
-Get GitHub OAuth Apps access token by using GCP Cloud Functions, because `The implicit grant type is not supported` 
-from [GitHub official][authorizing-oauth-apps] currently 
+Upload files to GitHub Repo
 
 A real use case of GitHub workflow that uses [GitHub Actions][actions] to deploy a
 [GitHub OAuth App Node.js app](index.js) to [Cloud Functions][cloud-functions].
