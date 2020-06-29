@@ -1,0 +1,26 @@
+{
+  "name": "@gitaction/oauth-token",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "source": "source .env",
+    "lanuch": "CLIENT_ID=${CLIENT_ID} CLIENT_SECRET=${CLIENT_SECRET} functions-framework --target=oauthToken",
+    "start": "yarn source && yarn lanuch"
+  },
+  "keywords": [
+    "OAuth",
+    "Access Token"
+  ],
+  "author": "https://github.com/sunwei",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.6.0",
+    "@types/jest": "^26.0.3",
+    "jest": "^26.1.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
