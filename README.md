@@ -1,6 +1,6 @@
 # GitHub OAuth App access token serverless solution 
 
-![Build and Deploy to Cloud Functions](https://github.com/gitaction/oauth-access-token-github-gcp-cloud-functions/workflows/Build%20and%20Deploy%20to%20Cloud%20Functions/badge.svg)
+![Build and Deploy to Cloud Functions](https://github.com/gitaction/upload-file-to-github/workflows/Build%20and%20Deploy%20to%20Cloud%20Functions/badge.svg)
 
 Get GitHub OAuth Apps access token by using GCP Cloud Functions, because `The implicit grant type is not supported` 
 from [GitHub official][authorizing-oauth-apps] currently 
