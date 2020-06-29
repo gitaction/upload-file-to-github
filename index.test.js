@@ -1,5 +1,5 @@
 const axios = require('axios');
-const oauthToken = require('./index').oauthToken;
+const uploadFileToGitHub = require('./index').uploadFileToGitHub;
 
 jest.mock('axios');
 
@@ -14,19 +14,19 @@ const mockResponse = () => {
 const mockRequest = {
   method: 'POST',
   body: {
-    redirect_uri: "req.body.redirect_uri",
-    client_id: "req.body.client_id",
-    client_secret: "req.body.client_secret",
-    code: "req.body.code",
-    state: "req.body.state"
+    "token": "4ca81154xxxxxx080301ae1a1",
+    "pathName": "abc/test2.json",
+    "fileBase64Content": "ewogICAgImFycmF5IjogWwogICAgICAgIDEsCiAgICAgICAgMiwKICAgICAgICAzLAogICAgICAgIDQKICAgIF0sCiAgICAiYm9vbGVhbiI6IHRydWUsCiAgICAibnVsbCI6IG51bGwsCiAgICAibnVtYmVyIjogMTIzLAogICAgIm9iamVjdCI6IHsKICAgICAgICAiYSI6ICJiIiwKICAgICAgICAiYyI6ICJkIiwKICAgICAgICAiZSI6ICJmIgogICAgfSwKICAgICJzdHJpbmciOiAiSGVsbG8gV29ybGQiCn0=",
+    "repoName": "gitaction/comics",
+    "branch": "master"
   }
 };
 
 test('should allow all the origin for CORS Preflight', () => {
   const req = {method: 'OPTIONS'};
   const res = mockResponse();
-  
-  oauthToken(req, res);
+
+  uploadFileToGitHub(req, res);
   
   expect(res.set.mock.calls).toEqual([
     ["Access-Control-Allow-Origin", "*"],
@@ -42,7 +42,7 @@ test('should receive input error when parameters missing', () => {
   const req = { method: 'POST', body: {}};
   const res = mockResponse();
 
-  oauthToken(req, res);
+  uploadFileToGitHub(req, res);
 
   expect(res.status).toHaveBeenCalledWith(409);
   expect(res.send).toHaveBeenCalledWith('error');
@@ -50,26 +50,28 @@ test('should receive input error when parameters missing', () => {
 
 test('should receive token with 200', async () => {
   const res = mockResponse();
-  const token = {
-    "access_token": "e72e16c7e42f292c6912e7710c838347ae178b4a",
-    "scope": "repo,gist",
-    "token_type": "bearer"
-  };
-  const resp = {data: token};
 
-  axios.post.mockResolvedValue(resp);
-  await oauthToken(mockRequest, res);
+  const respGet = {data: {"sha": "sha123"}};
+  const respPut = {data: {"content": "content123"}};
+
+  axios.create = jest.fn().mockReturnValue(axios);
+  axios.get.mockResolvedValue(respGet);
+  axios.put.mockResolvedValue(respPut);
+  await uploadFileToGitHub(mockRequest, res);
 
   expect(res.status).toHaveBeenCalledWith(200);
-  expect(res.send).toHaveBeenCalledWith(token);
+  expect(res.send).toHaveBeenCalledWith({"content": "content123"});
 });
 
 test('should throw 500 when error caught', async () => {
   const res = mockResponse();
   const resp = new Error("errorMessage");
+  const respGet = {data: {"sha": "sha123"}};
 
-  axios.post.mockRejectedValue(resp);
-  await oauthToken(mockRequest, res);
+  axios.create = jest.fn().mockReturnValue(axios);
+  axios.get.mockResolvedValue(respGet);
+  axios.put.mockRejectedValue(resp);
+  await uploadFileToGitHub(mockRequest, res);
   
   expect(res.status).toHaveBeenCalledWith(500);
   expect(res.send).toHaveBeenCalledWith("error");

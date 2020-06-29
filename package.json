@@ -1,16 +1,17 @@
 {
-  "name": "@gitaction/oauth-token",
+  "name": "@gitaction/upload-file-to-github",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "source": "source .env",
-    "lanuch": "CLIENT_ID=${CLIENT_ID} CLIENT_SECRET=${CLIENT_SECRET} functions-framework --target=oauthToken",
+    "lanuch": "GH_TOKEN=${GH_TOKEN} functions-framework --target=uploadFileToGitHub",
     "start": "yarn source && yarn lanuch"
   },
   "keywords": [
-    "OAuth",
-    "Access Token"
+    "GitHub",
+    "Repo",
+    "Upload file"
   ],
   "author": "https://github.com/sunwei",
   "license": "MIT",

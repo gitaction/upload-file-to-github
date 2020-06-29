@@ -21,10 +21,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
-  CLIENT_ID: ${{ secrets.GH_CLIENT_ID }}
-  CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
   RUN_REGION: us-central1
-  SERVICE_NAME: oauthToken
+  SERVICE_NAME: uploadFileToGitHub
 
 jobs:
   setup-build-deploy:
@@ -55,17 +54,16 @@ jobs:
 
     # Get Cloud Function folder ready with all the content needed
     - name: Deploy preparation
-      run: mkdir oauth-token \ 
-        && cp -t ./oauth-token/ .gcloudignore index.js package.json
+      run: mkdir dist \ 
+        && cp -t ./dist/ .gcloudignore index.js package.json
         
     # Deploy functions to Cloud Functions
     - name: Deploy
       run: |-
         gcloud functions deploy "$SERVICE_NAME" \
           --region "$RUN_REGION" \
-          --source "./oauth-token" \
-          --set-env-vars CLIENT_ID="$CLIENT_ID" \
-          --set-env-vars CLIENT_SECRET="$CLIENT_SECRET" \
+          --source "./dist" \
+          --set-env-vars GH_TOKEN="$GH_TOKEN" \
           --trigger-http \
           --memory 128MB \
           --runtime "nodejs10" \
