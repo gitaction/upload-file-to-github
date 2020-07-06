@@ -44,8 +44,10 @@ exports.uploadFileToGitHub = async (req, res) => {
       });
     
     if (response === 'error'){
+      console.log(message + " : " + "error");
       return res.status(500).send('error');
     } else {
+      console.log(message + " : " + "success");
       return res.status(200).send(response);
     }
   }
@@ -58,7 +60,7 @@ const updateFile = async (url, data) => {
       res = response.data;
     });
   } catch (error) {
-    console.log(error.toString());
+    console.log(error.response.message + ":" + error.toString());
     res = 'error';
   }
   return res;
@@ -71,7 +73,7 @@ const getFileSha = async (url) => {
         sha = response.data['sha'];
       });
   } catch (error) {
-    console.log(error.toString());
+    console.log("File not found: " + error.toString());
     if (error.response.status === 404) {
       return sha;
     }

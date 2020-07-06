@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "source": "source .env",
-    "lanuch": "GH_TOKEN=${GH_TOKEN} functions-framework --target=uploadFileToGitHub",
+    "lanuch": "GH_TOKEN=${GH_TOKEN} functions-framework --target=uploadFileToGitHub --port=7002",
     "start": "yarn source && yarn lanuch"
   },
   "keywords": [
